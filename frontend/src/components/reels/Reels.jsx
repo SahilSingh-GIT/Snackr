@@ -44,7 +44,7 @@ const Reels = () => {
         if (pageNum === 1) setLoading(true);
         else setLoadingMore(true);
 
-        const { data } = await api.get("/v1/reels/feed", {
+        const { data } = await api.get("/api/v1/reels/feed", {
           params: { page: pageNum, limit: 8 },
         });
 
@@ -78,7 +78,7 @@ const Reels = () => {
     const current = currentWatchRef.current;
     if (current.reelId && current.watchTime > 0) {
       try {
-        await api.post(`/v1/reels/${current.reelId}/interaction`, {
+        await api.post(`/api/v1/reels/${current.reelId}/interaction`, {
           watchTime: Math.round(current.watchTime),
           completionRate: Math.round(current.completionRate),
           completed: current.completed,
@@ -210,7 +210,7 @@ const Reels = () => {
     }
 
     try {
-      const { data } = await api.post(`/v1/reels/${reel._id}/like`);
+      const { data } = await api.post(`/api/v1/reels/${reel._id}/like`);
       if (data.success) {
         setReels((prev) =>
           prev.map((r) =>

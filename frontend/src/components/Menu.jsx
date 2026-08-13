@@ -5,7 +5,7 @@ import { getMenus } from "../redux/actions/menuActions";
 import { getRestaurants, analyzeReviews } from "../redux/actions/restaurantAction";
 import Fooditem from "./Fooditem";
 import Loader from "./layout/Loader";
-import axios from "axios";
+import api from "../utils/api";
 import { toast } from "react-toastify";
 
 const Menu = () => {
@@ -31,7 +31,7 @@ const Menu = () => {
     // Fetch store details directly
     const fetchStore = async () => {
       try {
-        const { data } = await axios.get(`/api/v1/eats/stores/${id}`);
+        const { data } = await api.get(`/api/v1/eats/stores/${id}`);
         if (data && data.data) {
           setRestaurantData(data.data);
         }
@@ -55,7 +55,7 @@ const Menu = () => {
 
     setSubmittingReview(true);
     try {
-      await axios.post(
+      await api.post(
         `/api/v1/eats/stores/${id}/reviews`,
         {
           rating: Number(reviewRating),
@@ -69,7 +69,7 @@ const Menu = () => {
       setReviewComment("");
 
       // Refresh restaurant data
-      const { data } = await axios.get(`/api/v1/eats/stores/${id}`);
+      const { data } = await api.get(`/api/v1/eats/stores/${id}`);
       if (data && data.data) {
         setRestaurantData(data.data);
       }

@@ -113,7 +113,7 @@ const Register = () => {
     };
 
     try {
-      const { data } = await api.post("/v1/users/signup", userData, {
+      const { data } = await api.post("/api/v1/users/signup", userData, {
         headers: { "Content-Type": "application/json" },
       });
       toast.success(data.message || "OTP sent to your email!");
@@ -134,7 +134,7 @@ const Register = () => {
 
     setVerifying(true);
     try {
-      const { data } = await api.post("/v1/users/verify-email", { email, otp });
+      const { data } = await api.post("/api/v1/users/verify-email", { email, otp });
 
       toast.success(data.message || "Email verified! Welcome to Snackr 🎉");
       
@@ -144,7 +144,7 @@ const Register = () => {
       // If restaurant role, create the restaurant
       if (role === "restaurant") {
         try {
-          await api.post("/v1/eats/stores", {
+          await api.post("/api/v1/eats/stores", {
             name: restaurantInfo.restaurantName,
             cuisine: restaurantInfo.cuisine,
             address: `${restaurantInfo.address}, ${restaurantInfo.pincode}`,
@@ -175,7 +175,7 @@ const Register = () => {
 
   const handleResendOTP = async () => {
     try {
-      const { data } = await api.post("/v1/users/resend-otp", { email });
+      const { data } = await api.post("/api/v1/users/resend-otp", { email });
       toast.info(data.message || "New OTP sent!");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to resend OTP");

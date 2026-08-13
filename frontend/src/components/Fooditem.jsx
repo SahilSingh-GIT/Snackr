@@ -6,7 +6,7 @@ import {
   updateCartQuantity,
   removeItemFromCart,
 } from "../redux/actions/cartActions";
-import axios from "axios";
+import api from "../utils/api";
 import { toast } from "react-toastify";
 
 const Fooditem = ({ fooditem, restaurant }) => {
@@ -83,13 +83,13 @@ const Fooditem = ({ fooditem, restaurant }) => {
 
     try {
       if (isSaved) {
-        await axios.delete(`/api/v1/users/me/saved/${fooditem._id}`, {
+        await api.delete(`/api/v1/users/me/saved/${fooditem._id}`, {
           withCredentials: true,
         });
         setIsSaved(false);
         toast.info("Removed from saved foods");
       } else {
-        await axios.post(
+        await api.post(
           `/api/v1/users/me/saved/${fooditem._id}`,
           {},
           { withCredentials: true }

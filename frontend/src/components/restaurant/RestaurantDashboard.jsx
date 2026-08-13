@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/api";
 import { toast } from "react-toastify";
 import Loader from "../layout/Loader";
 
@@ -60,7 +60,7 @@ const RestaurantDashboard = () => {
           return;
         }
 
-        const { data: restData } = await axios.get(`/api/v1/eats/stores/${user.restaurantId}`);
+        const { data: restData } = await api.get(`/api/v1/eats/stores/${user.restaurantId}`);
         const current = restData.data;
 
         setSelectedRestaurant(current);
@@ -91,13 +91,13 @@ const RestaurantDashboard = () => {
   const loadStoreDetails = async (storeId) => {
     try {
       // 1. Load Food Items
-      const { data: itemData } = await axios.get(
+      const { data: itemData } = await api.get(
         `/api/v1/eats/items/${storeId}`
       );
       setFoodItems(itemData.data || []);
 
       // 2. Load Orders
-      const { data: orderData } = await axios.get(
+      const { data: orderData } = await api.get(
         `/api/v1/eats/orders/restaurant/${storeId}`,
         { withCredentials: true }
       );
@@ -127,7 +127,7 @@ const RestaurantDashboard = () => {
 
     setAiLoading(true);
     try {
-      const { data } = await axios.post("/api/v1/ai/generate-food", {
+      const { data } = await api.post("/api/v1/ai/generate-food", {
         name: newItem.name,
         category: newItem.category,
         spiceLevel: newItem.spiceLevel,
@@ -220,13 +220,13 @@ const RestaurantDashboard = () => {
       newItem.bestFor.forEach(b => formData.append("aiBestFor[]", b));
 
       if (editMode) {
-        await axios.put(`/api/v1/eats/item/${editingItemId}`, formData, {
+        await api.put(`/api/v1/eats/item/${editingItemId}`, formData, {
           withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success(`${newItem.name} updated successfully!`);
       } else {
-        await axios.post("/api/v1/eats/item", formData, {
+        await api.post("/api/v1/eats/item", formData, {
           withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -249,7 +249,7 @@ const RestaurantDashboard = () => {
   const toggleStock = async (item) => {
     const newStock = item.stock > 0 ? 0 : 50;
     try {
-      await axios.put(
+      await api.put(
         `/api/v1/eats/item/${item._id}`,
         { stock: newStock },
         { withCredentials: true }
@@ -270,7 +270,7 @@ const RestaurantDashboard = () => {
   const deleteItem = async (itemId) => {
     if (!window.confirm("Are you sure you want to delete this dish?")) return;
     try {
-      await axios.delete(`/api/v1/eats/item/${itemId}`, {
+      await api.delete(`/api/v1/eats/item/${itemId}`, {
         withCredentials: true,
       });
       setFoodItems((prev) => prev.filter((it) => it._id !== itemId));
@@ -284,7 +284,7 @@ const RestaurantDashboard = () => {
   // Update Order Status
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.put(
+      await api.put(
         `/api/v1/eats/orders/${orderId}/status`,
         { status: newStatus },
         { withCredentials: true }
@@ -317,7 +317,7 @@ const RestaurantDashboard = () => {
         formData.append("imageUrl", coverImageUrl);
       }
 
-      const { data } = await axios.put(
+      const { data } = await api.put(
         `/api/v1/eats/stores/${selectedRestaurant._id}`,
         formData,
         {
@@ -340,7 +340,7 @@ const RestaurantDashboard = () => {
     if (!selectedRestaurant) return;
     setAnalyzingReviews(true);
     try {
-      const { data } = await axios.post(
+      const { data } = await api.post(
         `/api/v1/ai/analyze-reviews/${selectedRestaurant._id}`
       );
       if (data && data.aiData) {

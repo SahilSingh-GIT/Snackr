@@ -7,3 +7,4 @@ build/
 *.env
 backend/config/config.env
 .DS_Store
+Running_process.txt

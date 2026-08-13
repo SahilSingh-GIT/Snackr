@@ -25,7 +25,7 @@ const OrderOptionsModal = ({ isOpen, onClose, reel }) => {
   const fetchOrderOptions = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get(`/v1/reels/${reel._id}/order-options`);
+      const { data } = await api.get(`/api/v1/reels/${reel._id}/order-options`);
       setOptionsData(data);
     } catch (err) {
       console.error("Error fetching order options:", err);
@@ -52,7 +52,7 @@ const OrderOptionsModal = ({ isOpen, onClose, reel }) => {
 
       // Track order click signal
       try {
-        await api.post(`/v1/reels/${reel._id}/interaction`, {
+        await api.post(`/api/v1/reels/${reel._id}/interaction`, {
           orderClicked: true,
         });
       } catch (e) {}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import api from "../../utils/api";
 import { toast } from "react-toastify";
 import Loader from "../layout/Loader";
 import { addItemToCart } from "../../redux/actions/cartActions";
@@ -23,7 +23,7 @@ const SavedFoods = () => {
     const fetchSaved = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("/api/v1/users/me/saved", {
+        const { data } = await api.get("/api/v1/users/me/saved", {
           withCredentials: true,
         });
         if (data && data.savedFoods) {
@@ -42,7 +42,7 @@ const SavedFoods = () => {
 
   const removeSaved = async (foodId) => {
     try {
-      await axios.delete(`/api/v1/users/me/saved/${foodId}`, {
+      await api.delete(`/api/v1/users/me/saved/${foodId}`, {
         withCredentials: true,
       });
       setSavedFoods((prev) => prev.filter((item) => item._id !== foodId));

@@ -51,7 +51,7 @@ export const checkoutWithRazorpay =
 
       // 2. Create Razorpay order on the backend
       const { data } = await api.post(
-        "/v1/payment/process",
+        "/api/v1/payment/process",
         { items: cartItems, restaurant, deliveryInfo },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -96,7 +96,7 @@ export const checkoutWithRazorpay =
 
             // 4. Server-Side Signature Verification & Order Creation
             const verifyRes = await api.post(
-              "/v1/payment/verify",
+              "/api/v1/payment/verify",
               {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -166,7 +166,7 @@ export const checkoutWithRazorpay =
 export const myOrders = () => async (dispatch) => {
   try {
     dispatch(myOrdersRequest());
-    const { data } = await api.get("/v1/eats/orders/me/myOrders");
+    const { data } = await api.get("/api/v1/eats/orders/me/myOrders");
     dispatch(myOrdersSuccess(data.orders));
   } catch (error) {
     dispatch(myOrdersFail(error.response?.data?.message));
@@ -179,7 +179,7 @@ export const myOrders = () => async (dispatch) => {
 export const getOrderDetails = (id) => async (dispatch) => {
   try {
     dispatch(orderDetailsRequest());
-    const { data } = await api.get(`/v1/eats/orders/${id}`);
+    const { data } = await api.get(`/api/v1/eats/orders/${id}`);
     dispatch(orderDetailsSuccess(data.order));
   } catch (error) {
     dispatch(orderDetailsFail(error.response?.data?.message));

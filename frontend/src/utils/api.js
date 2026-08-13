@@ -1,9 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
-const baseURL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
-  : "/api";
+const baseURL = import.meta.env.VITE_API_BASE_URL || "";
 
 const api = axios.create({
   baseURL,
