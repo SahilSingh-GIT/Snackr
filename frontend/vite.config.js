@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         // target: "https://internship-b7.onrender.com",
-        target: "https://snackr.onrender.com",
+        target: "https://snackr.onrender.com/api",
         changeOrigin: true,
         secure: false,
       },
