@@ -449,11 +449,13 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
 // Logout
 export const logout = catchAsyncErrors(async (req, res, next) => {
+  const isProduction = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "PRODUCTION" || (process.env.FRONTEND_URL && process.env.FRONTEND_URL.includes("vercel.app"));
+  
   res.cookie("jwt", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
   });
 
   res.status(200).json({
